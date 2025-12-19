@@ -9,8 +9,7 @@ using System.Text;
 
 namespace ScenarioBuilderV2.Scenarios
 {
-    public sealed class CompletedPaidOrderScenario
-    : ScenarioBase<ScenarioContext>
+    public sealed class CompletedPaidOrderScenario : ScenarioBase<ScenarioContext>
     {
         private readonly CreateCompletedPaidOrderStep _createOrder;
         private readonly ProcessPaymentStep _processPayment;
