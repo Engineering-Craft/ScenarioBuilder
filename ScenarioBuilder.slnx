@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Folder Name="/Steps/">
+    <File Path="ScenarioBuilder/CreateOrderStep.cs" />
+    <File Path="ScenarioBuilder/ProcessPaymentStep.cs" />
+    <File Path="ScenarioBuilder/VerifyOrderStep.cs" />
+  </Folder>
+  <Project Path="ScenarioBuilder/ScenarioBuilderv1.csproj" />
+  <Project Path="ScenarioBuilderV2/ScenarioBuilderV2.csproj" Id="4598824e-eb3f-4f35-9289-51fc6f414782" />
+</Solution>
