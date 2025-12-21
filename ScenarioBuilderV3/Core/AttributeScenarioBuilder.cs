@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Reflection;
 
 namespace ScenarioBuilderV3.Core
@@ -10,12 +6,10 @@ namespace ScenarioBuilderV3.Core
     public sealed class AttributeScenarioBuilder
     {
         private readonly IScenarioBuilder _builder;
-        private readonly IServiceProvider _provider;
 
-        public AttributeScenarioBuilder(IScenarioBuilder builder, IServiceProvider provider)
+        public AttributeScenarioBuilder(IScenarioBuilder builder)
         {
             _builder = builder ?? throw new ArgumentNullException(nameof(builder));
-            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         }
 
         // Build method — adds all steps (including nested steps) to the builder

@@ -20,14 +20,14 @@ namespace ScenarioEngine.Tests
             // Core services
             services.AddScoped<ScenarioContext>();
             services.AddScoped<IScenarioBuilder, ScenarioBuilder>();
-            services.AddScoped<ScenarioExecutor>();
+            services.AddScoped<Scenario>();
 
             // Events
             services.AddAllScenarioEvents(typeof(OrderFulfillmentScenario).Assembly);
 
             services.AddTransient<IPaymentService, PaymentService>();
 
-            services.AddTransient<ScenarioEvent<PaymentScenario>>();
+            //    services.AddTransient<ScenarioEvent<PaymentScenario>>();
 
             // Scenario
             services.AddScoped<OrderFulfillmentScenario>();
@@ -40,7 +40,7 @@ namespace ScenarioEngine.Tests
         public async Task RunScenarioUpToShippingStep()
         {
             // Arrange
-            var executor = _provider.GetRequiredService<ScenarioExecutor>();
+            var executor = _provider.GetRequiredService<Scenario>();
 
             // Act: Run scenario up to ShipOrderStep using DSL
             var context = await executor.BuildAsync<OrderFulfillmentScenario>(
@@ -61,7 +61,7 @@ namespace ScenarioEngine.Tests
         public async Task RunScenarioThroughPaymentStep()
         {
             // Arrange
-            var executor = _provider.GetRequiredService<ScenarioExecutor>();
+            var executor = _provider.GetRequiredService<Scenario>();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
             var context = await executor.BuildAsync<OrderFulfillmentScenario>(
@@ -82,7 +82,7 @@ namespace ScenarioEngine.Tests
         public async Task RunFullScenario()
         {
             // Arrange
-            var executor = _provider.GetRequiredService<ScenarioExecutor>();
+            var executor = _provider.GetRequiredService<Scenario>();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
             var context = await executor.BuildAsync<OrderFulfillmentScenario>();

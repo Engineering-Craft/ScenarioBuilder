@@ -18,7 +18,7 @@ namespace ScenarioBuilderV3.Core
         public ScenarioStepAttribute(Type stepId)
         {
             if (!typeof(IScenarioEvent).IsAssignableFrom(stepId))
-                throw new ArgumentException("StepId must implement IScenarioStepId");
+                throw new ArgumentException("StepId must implement IScenarioEvent");
             StepId = stepId;
         }
     }
