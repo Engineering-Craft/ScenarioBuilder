@@ -9,4 +9,5 @@
   </Folder>
   <Project Path="ScenarioBuilder/ScenarioBuilderv1.csproj" />
   <Project Path="ScenarioBuilderV2/ScenarioBuilderV2.csproj" Id="4598824e-eb3f-4f35-9289-51fc6f414782" />
+  <Project Path="ScenarioBuilderV3/ScenarioBuilderV3.csproj" Id="dd108432-b9bf-4e21-88db-5e45e2749ef4" />
 </Solution>
