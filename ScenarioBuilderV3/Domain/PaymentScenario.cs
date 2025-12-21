@@ -10,5 +10,8 @@ namespace ScenarioBuilderV3.Domain
     {
         [ScenarioStep(typeof(ChargePaymentStep))]
         public ChargePaymentEvent? ChargePayment { get; init; }
+
+        [ScenarioStep(typeof(VerifyPaymentStep))]
+        public VerifyPaymentEvent? VerifyPayment { get; init; }
     }
 }

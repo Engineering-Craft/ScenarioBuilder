@@ -14,6 +14,9 @@ namespace ScenarioBuilderV3.Domain
     public sealed class ChargePaymentStep : IScenarioStepId
     { }
 
+    public sealed class VerifyPaymentStep : IScenarioStepId
+    { }
+
     public sealed class ShipOrderStep : IScenarioStepId
     { }
 }

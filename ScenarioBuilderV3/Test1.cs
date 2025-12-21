@@ -23,18 +23,15 @@ namespace ScenarioEngine.Tests
             services.AddScoped<ScenarioExecutor>();
 
             // Events
-            services.AddTransient<CreateOrderEvent>();
-            services.AddTransient<ReserveInventoryEvent>();
-            services.AddTransient<ChargePaymentEvent>();
-            services.AddTransient<PaymentScenario>();
+            services.AddAllScenarioEvents(typeof(OrderFulfillmentScenario).Assembly);
 
-            services.AddTransient<ShipOrderEvent>();
             services.AddTransient<IPaymentService, PaymentService>();
 
             services.AddTransient<ScenarioEvent<PaymentScenario>>();
 
             // Scenario
             services.AddScoped<OrderFulfillmentScenario>();
+            services.AddScoped<PaymentScenario>();
 
             _provider = services.BuildServiceProvider();
         }

@@ -16,8 +16,8 @@ namespace ScenarioBuilderV3.Domain
         [ScenarioStep(typeof(ReserveInventoryStep))]
         public ReserveInventoryEvent? ReserveInventory { get; init; }
 
-        [ScenarioStep(typeof(ChargePaymentStep))]
-        public ChargePaymentEvent? ChargePayment { get; init; }
+        [NestedScenario(typeof(PaymentScenario))]
+        public PaymentScenario? PaymentScenario { get; init; }
 
         [ScenarioStep(typeof(ShipOrderStep))]
         public ShipOrderEvent? ShipOrder { get; init; }

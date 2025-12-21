@@ -1,7 +1,4 @@
 ﻿using ScenarioBuilderV3.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScenarioBuilderV3.Domain
 {
@@ -39,6 +36,15 @@ namespace ScenarioBuilderV3.Domain
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
             Console.WriteLine("Payment charged");
+            return Task.CompletedTask;
+        }
+    }
+
+    public sealed class VerifyPaymentEvent : IScenarioEvent
+    {
+        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        {
+            Console.WriteLine("Payment Verified");
             return Task.CompletedTask;
         }
     }
