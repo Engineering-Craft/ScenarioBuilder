@@ -13,5 +13,8 @@ namespace ScenarioBuilderV3.Domain
 
         [ScenarioStep(typeof(VerifyPaymentStep))]
         public VerifyPaymentEvent? VerifyPayment { get; init; }
+
+        [NestedScenario(typeof(AnotherScenario))]
+        public AnotherScenario? PaymentScenario1 { get; init; }
     }
 }
