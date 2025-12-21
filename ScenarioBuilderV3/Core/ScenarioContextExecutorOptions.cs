@@ -14,18 +14,18 @@ namespace ScenarioBuilderV3.Core
         public static ScenarioExecutionOptions Default => new();
 
         public ScenarioExecutionOptions StopBefore<TStep>()
-            where TStep : IScenarioStepId
+            where TStep : IScenarioEvent
         {
             _stopBefore.Add(typeof(TStep));
             return this;
         }
 
         public ScenarioExecutionOptions RunUntil<TStep>()
-            where TStep : IScenarioStepId
+            where TStep : IScenarioEvent
             => StopBefore<TStep>();
 
         public ScenarioExecutionOptions Override<TStep>(IScenarioEvent replacement)
-            where TStep : IScenarioStepId
+            where TStep : IScenarioEvent
         {
             _overrides[typeof(TStep)] = replacement;
             return this;

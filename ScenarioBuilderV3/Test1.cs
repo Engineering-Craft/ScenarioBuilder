@@ -43,7 +43,7 @@ namespace ScenarioEngine.Tests
             var executor = _provider.GetRequiredService<ScenarioExecutor>();
 
             // Act: Run scenario up to ShipOrderStep using DSL
-            var context = await executor.ExecuteAsync<OrderFulfillmentScenario>(
+            var context = await executor.BuildAsync<OrderFulfillmentScenario>(
                 OrderScenarioBoundaries
                     .Create()
                     .BySettingTheShipping() // stops at ShipOrderStep
@@ -64,7 +64,7 @@ namespace ScenarioEngine.Tests
             var executor = _provider.GetRequiredService<ScenarioExecutor>();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await executor.ExecuteAsync<OrderFulfillmentScenario>(
+            var context = await executor.BuildAsync<OrderFulfillmentScenario>(
                 OrderScenarioBoundaries
                     .Create()
                     .ByChargingPayment()
@@ -85,7 +85,7 @@ namespace ScenarioEngine.Tests
             var executor = _provider.GetRequiredService<ScenarioExecutor>();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await executor.ExecuteAsync<OrderFulfillmentScenario>();
+            var context = await executor.BuildAsync<OrderFulfillmentScenario>();
 
             // Assert: OrderId exists
             Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));

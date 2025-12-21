@@ -10,16 +10,16 @@ namespace ScenarioBuilderV3.Domain
     {
         // Embed PaymentScenario as a nested scenario
 
-        [ScenarioStep(typeof(CreateOrderStep))]
+        [ScenarioStep(typeof(CreateOrderEvent))]
         public CreateOrderEvent? CreateOrder { get; init; }
 
-        [ScenarioStep(typeof(ReserveInventoryStep))]
+        [ScenarioStep(typeof(ReserveInventoryEvent))]
         public ReserveInventoryEvent? ReserveInventory { get; init; }
 
         [NestedScenario(typeof(PaymentScenario))]
         public PaymentScenario? PaymentScenario { get; init; }
 
-        [ScenarioStep(typeof(ShipOrderStep))]
+        [ScenarioStep(typeof(ShipOrderEvent))]
         public ShipOrderEvent? ShipOrder { get; init; }
     }
 }

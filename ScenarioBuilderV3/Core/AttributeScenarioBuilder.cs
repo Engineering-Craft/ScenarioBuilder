@@ -27,7 +27,7 @@ namespace ScenarioBuilderV3.Core
             {
                 var method = typeof(IScenarioBuilder)
                     .GetMethod(nameof(IScenarioBuilder.AddStep))!
-                    .MakeGenericMethod(step.StepId, step.EventType);
+                    .MakeGenericMethod(step.EventType);
 
                 method.Invoke(_builder, null);
             }

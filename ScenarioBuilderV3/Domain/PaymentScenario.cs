@@ -8,10 +8,10 @@ namespace ScenarioBuilderV3.Domain
     [Scenario]
     public sealed class PaymentScenario : IAttributedScenario
     {
-        [ScenarioStep(typeof(ChargePaymentStep))]
+        [ScenarioStep(typeof(ChargePaymentEvent))]
         public ChargePaymentEvent? ChargePayment { get; init; }
 
-        [ScenarioStep(typeof(VerifyPaymentStep))]
+        [ScenarioStep(typeof(VerifyPaymentEvent))]
         public VerifyPaymentEvent? VerifyPayment { get; init; }
 
         [NestedScenario(typeof(AnotherScenario))]

@@ -14,12 +14,12 @@ namespace ScenarioBuilderV3.Domain
 
         public static OrderScenarioBoundaries Create() => new(new ScenarioExecutionOptions());
 
-        public ScenarioExecutionOptions ByCreatingTheOrder() => _options.RunUntil<CreateOrderStep>();
+        public ScenarioExecutionOptions ByCreatingTheOrder() => _options.RunUntil<CreateOrderEvent>();
 
-        public ScenarioExecutionOptions ByReservingInventory() => _options.RunUntil<ReserveInventoryStep>();
+        public ScenarioExecutionOptions ByReservingInventory() => _options.RunUntil<ReserveInventoryEvent>();
 
-        public ScenarioExecutionOptions ByChargingPayment() => _options.RunUntil<ChargePaymentStep>();
+        public ScenarioExecutionOptions ByChargingPayment() => _options.RunUntil<ChargePaymentEvent>();
 
-        public ScenarioExecutionOptions BySettingTheShipping() => _options.RunUntil<ShipOrderStep>();
+        public ScenarioExecutionOptions BySettingTheShipping() => _options.RunUntil<ShipOrderEvent>();
     }
 }

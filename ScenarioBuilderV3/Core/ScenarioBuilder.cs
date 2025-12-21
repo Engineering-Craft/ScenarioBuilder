@@ -19,11 +19,10 @@ namespace ScenarioBuilderV3.Core
             _context = context;
         }
 
-        public IScenarioBuilder AddStep<TStepId, TEvent>()
-            where TStepId : IScenarioStepId
+        public IScenarioBuilder AddStep<TEvent>()
             where TEvent : IScenarioEvent
         {
-            _steps.Add(new ScenarioStep(typeof(TStepId), () => _provider.GetRequiredService<TEvent>()));
+            _steps.Add(new ScenarioStep(typeof(TEvent), () => _provider.GetRequiredService<TEvent>()));
             return this;
         }
 

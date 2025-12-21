@@ -12,7 +12,7 @@ namespace ScenarioBuilderV3.Core
 
         public ScenarioExecutor(IServiceProvider provider) => _provider = provider;
 
-        public async Task<ScenarioContext> ExecuteAsync<TScenario>(
+        public async Task<ScenarioContext> BuildAsync<TScenario>(
             ScenarioExecutionOptions? options = null,
             CancellationToken ct = default)
             where TScenario : IAttributedScenario

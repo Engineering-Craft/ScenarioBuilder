@@ -13,10 +13,8 @@ namespace ScenarioBuilderV3.Core
         /// <summary>
         /// Adds a step by type. Not used for nested scenarios (see factory overload).
         /// </summary>
-        /// <typeparam name="TStepId">The unique step identifier type.</typeparam>
         /// <typeparam name="TEvent">The event type to execute.</typeparam>
-        IScenarioBuilder AddStep<TStepId, TEvent>()
-            where TStepId : IScenarioStepId
+        IScenarioBuilder AddStep<TEvent>()
             where TEvent : IScenarioEvent;
 
         /// <summary>
