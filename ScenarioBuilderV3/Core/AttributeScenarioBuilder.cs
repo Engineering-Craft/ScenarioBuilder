@@ -21,7 +21,7 @@ namespace ScenarioBuilderV3.Core
         // Build method — adds all steps (including nested steps) to the builder
         public void Build<TScenario>() where TScenario : IAttributedScenario
         {
-            var metadata = _cache.GetOrAdd(typeof(TScenario), t => BuildMetadata(t, _provider));
+            var metadata = _cache.GetOrAdd(typeof(TScenario), t => BuildMetadata(t));
 
             foreach (var step in metadata.Steps)
             {
@@ -33,34 +33,35 @@ namespace ScenarioBuilderV3.Core
             }
         }
 
-        // Recursively builds metadata including nested scenario steps
-        private static ScenarioMetadata BuildMetadata(Type scenarioType, IServiceProvider provider)
+        private static ScenarioMetadata BuildMetadata(Type scenarioType)
         {
             var steps = new List<ScenarioStepMetadata>();
-            CollectSteps(scenarioType, provider, steps);
+            CollectStepsRecursive(scenarioType, steps);
             return new ScenarioMetadata(steps);
         }
 
-        private static void CollectSteps(Type scenarioType, IServiceProvider provider, List<ScenarioStepMetadata> steps)
+        private static void CollectStepsRecursive(
+            Type scenarioType,
+            List<ScenarioStepMetadata> steps)
         {
-            foreach (var prop in scenarioType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var prop in scenarioType.GetProperties(
+                BindingFlags.Public | BindingFlags.Instance))
             {
-                // Normal scenario step
+                // Normal step
                 var stepAttr = prop.GetCustomAttribute<ScenarioStepAttribute>();
                 if (stepAttr != null)
                 {
-                    steps.Add(new ScenarioStepMetadata(stepAttr.StepId, prop.PropertyType));
+                    steps.Add(new ScenarioStepMetadata(
+                        stepAttr.StepId,
+                        prop.PropertyType));
+                    continue;
                 }
 
-                // Nested scenario — recursively add its steps
+                // Nested scenario → recurse
                 var nestedAttr = prop.GetCustomAttribute<NestedScenarioAttribute>();
                 if (nestedAttr != null)
                 {
-                    // Resolve instance via DI (if needed)
-                    var nestedScenario = provider.GetRequiredService(nestedAttr.ScenarioType);
-
-                    // Recursively collect steps
-                    CollectSteps(nestedAttr.ScenarioType, provider, steps);
+                    CollectStepsRecursive(nestedAttr.ScenarioType, steps);
                 }
             }
         }
