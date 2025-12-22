@@ -15,7 +15,7 @@ namespace ScenarioBuilderV3.Core
         public async Task<ScenarioContext> BuildAsync<TScenario>(
             ScenarioExecutionOptions? options = null,
             CancellationToken ct = default)
-            where TScenario : IAttributedScenario
+            where TScenario : IScenario
         {
             var context = _provider.GetRequiredService<ScenarioContext>();
             var builder = _provider.GetRequiredService<IScenarioBuilder>();
@@ -23,6 +23,19 @@ namespace ScenarioBuilderV3.Core
 
             attributeBuilder.Build<TScenario>();
             return await builder.RunAsync(options, ct);
+        }
+
+        public async Task<AttributeScenarioBuilder> Build<TScenario>(
+            ScenarioExecutionOptions? options = null,
+            CancellationToken ct = default)
+            where TScenario : IScenario
+        {
+            var context = _provider.GetRequiredService<ScenarioContext>();
+            var builder = _provider.GetRequiredService<IScenarioBuilder>();
+            var attributeBuilder = new AttributeScenarioBuilder(builder);
+
+            attributeBuilder.Build<TScenario>();
+            return attributeBuilder;
         }
     }
 }

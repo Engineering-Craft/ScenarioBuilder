@@ -13,7 +13,7 @@ namespace ScenarioBuilderV3.Core
         }
 
         // Build method — adds all steps (including nested steps) to the builder
-        public void Build<TScenario>() where TScenario : IAttributedScenario
+        public void Build<TScenario>() where TScenario : IScenario
         {
             var metadata = _cache.GetOrAdd(typeof(TScenario), t => BuildMetadata(t));
 

@@ -6,7 +6,7 @@ using System.Text;
 namespace ScenarioBuilderV3.Domain
 {
     [Scenario]
-    public sealed class PaymentScenario : IAttributedScenario
+    public sealed class PaymentScenario : IScenario
     {
         [ScenarioStep(typeof(ChargePaymentEvent))]
         public ChargePaymentEvent? ChargePayment { get; init; }

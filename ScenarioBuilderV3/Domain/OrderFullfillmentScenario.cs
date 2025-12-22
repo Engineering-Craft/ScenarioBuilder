@@ -1,15 +1,10 @@
 ﻿using ScenarioBuilderV3.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScenarioBuilderV3.Domain
 {
     [Scenario]
-    public sealed class OrderFulfillmentScenario : IAttributedScenario
+    public sealed class OrderFulfillmentScenario : IScenario
     {
-        // Embed PaymentScenario as a nested scenario
-
         [ScenarioStep(typeof(CreateOrderEvent))]
         public CreateOrderEvent? CreateOrder { get; init; }
 
