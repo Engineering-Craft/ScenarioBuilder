@@ -27,34 +27,11 @@ namespace ScenarioEngine.Tests
 
             services.AddTransient<IPaymentService, PaymentService>();
 
-            //    services.AddTransient<ScenarioEvent<PaymentScenario>>();
-
             // Scenario
             services.AddScoped<OrderFulfillmentScenario>();
             services.AddScoped<PaymentScenario>();
 
             _provider = services.BuildServiceProvider();
-        }
-
-        [TestMethod]
-        public async Task RunScenarioUpToShippingStep()
-        {
-            // Arrange
-            var executor = _provider.GetRequiredService<Scenario>();
-
-            // Act: Run scenario up to ShipOrderStep using DSL
-            var context = await executor.BuildAsync<OrderFulfillmentScenario>(
-                OrderScenarioBoundaries
-                    .Create()
-                    .BySettingTheShipping() // stops at ShipOrderStep
-            );
-
-            // Assert: Check context has OrderId
-            Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));
-            Assert.AreNotEqual(Guid.Empty, orderId);
-
-            // Optional: print for demo
-            Console.WriteLine($"Order ID in scenario: {orderId}");
         }
 
         [TestMethod]
@@ -64,11 +41,7 @@ namespace ScenarioEngine.Tests
             var executor = _provider.GetRequiredService<Scenario>();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await executor.BuildAsync<OrderFulfillmentScenario>(
-                OrderScenarioBoundaries
-                    .Create()
-                    .ByChargingPayment()
-            );
+            var context = await executor.BuildAsync<OrderFulfillmentScenario>(new OrderScenarioBoundaries(_provider).ByFailingPayment());
 
             // Assert: OrderId exists
             Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));

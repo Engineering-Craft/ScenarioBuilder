@@ -40,6 +40,25 @@ namespace ScenarioBuilderV3.Domain
         }
     }
 
+    internal class ChargePaymentEventFail : IScenarioEvent
+    {
+        private IPaymentService ps;
+
+        public ChargePaymentEventFail()
+        {
+        }
+
+        public ChargePaymentEventFail(IPaymentService svc)
+        {
+            this.ps = svc;
+        }
+
+        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public sealed class VerifyPaymentEvent : IScenarioEvent
     {
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)

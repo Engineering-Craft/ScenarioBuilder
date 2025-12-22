@@ -1,4 +1,5 @@
-﻿using ScenarioBuilderV3.Domain;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ScenarioBuilderV3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,9 +32,22 @@ namespace ScenarioBuilderV3.Core
             return this;
         }
 
+        public ScenarioExecutionOptions Override<TStep, TReplacementStep>(ServiceProvider sp)
+        where TStep : IScenarioEvent
+        where TReplacementStep : IScenarioEvent, new()
+        {
+            _overrides[typeof(TStep)] = sp.GetRequiredService<TReplacementStep>();
+            return this;
+        }
+
         internal bool ShouldStopBefore(Type stepId) => _stopBefore.Contains(stepId);
 
         internal bool TryGetOverride(Type stepId, out IScenarioEvent replacement)
             => _overrides.TryGetValue(stepId, out replacement!);
+
+        internal ScenarioExecutionOptions Override<T1, T2>(ServiceCollection provider)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
