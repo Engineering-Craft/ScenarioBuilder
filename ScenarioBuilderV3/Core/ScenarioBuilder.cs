@@ -7,7 +7,7 @@ using System.Text;
 namespace ScenarioBuilderV3.Core
 {
     // Infrastructure/ScenarioBuilder.cs
-    public sealed class ScenarioBuilder : IScenarioBuilder
+    public class ScenarioBuilder : IScenarioBuilder
     {
         private readonly IServiceProvider _provider;
         private readonly ScenarioContext _context;

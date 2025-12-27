@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using ScenarioBuilderV3.Domain;
+using System.Collections.Concurrent;
 using System.Reflection;
 
 namespace ScenarioBuilderV3.Core

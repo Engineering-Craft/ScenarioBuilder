@@ -36,6 +36,7 @@ namespace ScenarioBuilderV3.Domain
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
             Console.WriteLine("Payment charged");
+            context.Set<Guid>("PaymentId", Guid.NewGuid());
             return Task.CompletedTask;
         }
     }
@@ -55,7 +56,7 @@ namespace ScenarioBuilderV3.Domain
 
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 

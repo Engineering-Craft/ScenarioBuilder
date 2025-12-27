@@ -32,7 +32,7 @@ namespace ScenarioBuilderV3.Core
             return this;
         }
 
-        public ScenarioExecutionOptions Override<TStep, TReplacementStep>(ServiceProvider sp)
+        public ScenarioExecutionOptions Override<TStep, TReplacementStep>(IServiceProvider sp)
         where TStep : IScenarioEvent
         where TReplacementStep : IScenarioEvent, new()
         {
@@ -44,10 +44,5 @@ namespace ScenarioBuilderV3.Core
 
         internal bool TryGetOverride(Type stepId, out IScenarioEvent replacement)
             => _overrides.TryGetValue(stepId, out replacement!);
-
-        internal ScenarioExecutionOptions Override<T1, T2>(ServiceCollection provider)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

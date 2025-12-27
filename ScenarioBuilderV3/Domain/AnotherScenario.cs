@@ -13,5 +13,14 @@ namespace ScenarioBuilderV3.Domain
 
         //[ScenarioStep(typeof(VerifyPaymentStep))]
         //public VerifyPaymentEvent? VerifyPayment { get; init; }
+        public IBuilder GetBuilder()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IServiceProvider GetProvider()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

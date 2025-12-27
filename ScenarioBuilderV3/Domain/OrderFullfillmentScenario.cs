@@ -3,7 +3,7 @@
 namespace ScenarioBuilderV3.Domain
 {
     [Scenario]
-    public sealed class OrderFulfillmentScenario : IScenario
+    public class OrderFulfillmentScenario : IScenario
     {
         [ScenarioStep(typeof(CreateOrderEvent))]
         public CreateOrderEvent? CreateOrder { get; init; }
