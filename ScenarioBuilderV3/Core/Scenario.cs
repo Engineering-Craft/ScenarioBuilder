@@ -2,75 +2,97 @@
 using ScenarioBuilderV3.Domain;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ScenarioBuilderV3.Core
 {
-    // Infrastructure/ScenarioExecutor.cs
-    public sealed class Scenario
+    public class Scenario : IScenarioBuilder
     {
-        private readonly IServiceProvider _provider;
+        private readonly ScenarioContext _context;
+        private readonly List<ScenarioStep> _steps = new();
+        private IServiceProvider _scenarioProvider;
 
-        public Scenario(IServiceProvider provider) => _provider = provider;
+        public Scenario()
+        {
+            _context = new ScenarioContext();
+        }
 
+        /// <summary>
+        /// Add a step to the scenario pipeline.
+        /// </summary>
+        public IScenarioBuilder AddStep<TEvent>()
+            where TEvent : IScenarioEvent
+        {
+            _steps.Add(new ScenarioStep(typeof(TEvent), () => _scenarioProvider.GetRequiredService<TEvent>()));
+            return this;
+        }
+
+        /// <summary>
+        /// Attribute-driven scenario execution.
+        /// </summary>
         public async Task<ScenarioContext> BuildAsync<TScenario>(
             ScenarioExecutionOptions? options = null,
             CancellationToken ct = default)
             where TScenario : IScenario
         {
-            var builder = _provider.GetRequiredService<IScenarioBuilder>();
-            var attributeBuilder = new AttributeScenarioBuilder(builder);
-
+            // Build steps from attributes into this instance
+            var attributeBuilder = new AttributeScenarioBuilder(this);
             attributeBuilder.Build<TScenario>();
 
-            return await builder.RunAsync(options, ct);
+            return await RunAsync(options, ct);
         }
 
         /// <summary>
-        /// Builder-driven execution (fluent configuration)
+        /// Builder-driven execution (fluent configuration).
         /// </summary>
         public async Task<ScenarioContext> BuildAsync<TScenario, TBuilder>(
-     Func<TBuilder, TBuilder> configure,
-     CancellationToken ct = default)
-     where TScenario : IScenario
-     where TBuilder : class, IScenarioOptionsBuilder<TBuilder>
+            Func<TBuilder, TBuilder>? configure = null,
+            CancellationToken ct = default)
+            where TScenario : IScenario
+            where TBuilder : class, IScenarioOptionsBuilder<TBuilder>, new()
         {
-            // 1️⃣ Resolve the main scenario builder (attribute-based)
-            var scenarioBuilder = _provider.GetRequiredService<IScenarioBuilder>();
+            var builder = new TBuilder();
 
-            // 2️⃣ Resolve your OrderScenarioBuilder from DI
-            var orderBuilder = _provider.GetRequiredService<TBuilder>();
+            var configured = (configure ?? (b => b))(builder);
 
-            // 3️⃣ Apply fluent configuration to produce ScenarioExecutionOptions
-            var configuredOrderBuilder = configure(orderBuilder);
-            var options = configuredOrderBuilder.Options;
+            _scenarioProvider = configured.Services;
 
-            // 4️⃣ Build attribute-driven steps
-            var attributeBuilder = new AttributeScenarioBuilder(scenarioBuilder);
+            var options = configured.Options;
+
+            var attributeBuilder = new AttributeScenarioBuilder(this);
             attributeBuilder.Build<TScenario>();
 
-            // 5️⃣ Execute the scenario with your builder’s options
-            return await scenarioBuilder.RunAsync(options, ct);
+            return await RunAsync(options, ct);
         }
 
-        //public async Task<TContext> BuildAsync<TBuilder, TContext>(
-        // Func<TBuilder, TBuilder> configure,
-        // CancellationToken ct = default)
-        // where TBuilder : class, IBuilder
-        //{
-        //    // Resolve the builder from DI
-        //    var builder = _provider.GetRequiredService<TBuilder>();
+        /// <summary>
+        /// Execute the scenario with optional execution options.
+        /// </summary>
+        public async Task<ScenarioContext> RunAsync(
+            ScenarioExecutionOptions? options = null,
+            CancellationToken ct = default)
+        {
+            options ??= ScenarioExecutionOptions.Default;
 
-        //    // Apply fluent configuration
-        //    var configuredBuilder = configure(builder);
+            foreach (var step in _steps)
+            {
+                if (options.ShouldStopBefore(step.StepId))
+                    break;
 
-        //    // Build options
-        //    var options = configuredBuilder;
+                if (options.TryGetOverride(step.StepId, out var overrideEvent))
+                {
+                    await overrideEvent.ExecuteAsync(_context, ct);
+                }
+                else
+                {
+                    await step.Factory().ExecuteAsync(_context, ct);
+                }
+            }
 
-        //    // Run scenario
-        //    var context = await configuredBuilder.RunAsync(options, ct);
+            return _context;
+        }
 
-        //    return context as TContext ?? throw new InvalidOperationException("Context type mismatch");
-        //}
+        private sealed record ScenarioStep(Type StepId, Func<IScenarioEvent> Factory);
     }
 }

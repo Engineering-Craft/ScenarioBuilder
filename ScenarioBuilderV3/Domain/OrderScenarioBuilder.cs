@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScenarioBuilderV3.Core;
+using ScenarioBuilderV3.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,20 +12,43 @@ namespace ScenarioBuilderV3.Domain
     {
         public ScenarioExecutionOptions ScenarioOptions { get; }
 
-        private IServiceProvider provider;
-
         public ScenarioExecutionOptions Options => ScenarioOptions;
 
-        public OrderScenarioBuilder(ScenarioExecutionOptions options, IServiceProvider p)
+        public OrderScenarioBuilder()
         {
-            ScenarioOptions = options;
-            this.provider = p;
+            ScenarioOptions = new ScenarioExecutionOptions();
         }
 
-        public OrderScenarioBuilder ByCreatingTheOrder()
+        public IServiceProvider Services
         {
-            ScenarioOptions.RunUntil<CreateOrderEvent>();
-            return this;
+            get
+            {
+                var services = new ServiceCollection();
+
+                // Core services
+                services.AddScoped<ScenarioContext>();
+
+                services.AddScoped<Scenario>();
+
+                // Events
+                services.AddAllScenarioEvents(typeof(OrderFulfillmentScenario).Assembly);
+
+                services.AddTransient<IPaymentService, PaymentService>();
+
+                // Scenario
+                services.AddScoped<OrderFulfillmentScenario>();
+                services.AddScoped<PaymentScenario>();
+
+                //Builders
+                services.AddScoped<OrderScenarioBuilder>();
+                services.AddTransient<OrderScenarioBuilder>();
+
+                services.AddTransient<ScenarioExecutionOptions>();
+                services.AddTransient<OrderScenarioBuilder>();
+                services.AddTransient<IScenarioOptionsBuilder<OrderScenarioBuilder>, OrderScenarioBuilder>();
+
+                return services.BuildServiceProvider();
+            }
         }
 
         public OrderScenarioBuilder ByReservingInventory()
@@ -35,7 +59,7 @@ namespace ScenarioBuilderV3.Domain
 
         public OrderScenarioBuilder ByFailingPayment()
         {
-            ScenarioOptions.Override<ChargePaymentEvent, ChargePaymentEventFail>(provider);
+            ScenarioOptions.Override<ChargePaymentEvent, ChargePaymentEventFail>(Services);
             return this;
         }
 

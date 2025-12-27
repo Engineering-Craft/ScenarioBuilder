@@ -11,43 +11,11 @@ namespace ScenarioEngine.Tests
     [TestClass]
     public class OrderFulfillmentScenarioTests
     {
-        private ServiceProvider _provider = null!;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            var services = new ServiceCollection();
-
-            // Core services
-            services.AddScoped<ScenarioContext>();
-            services.AddScoped<IScenarioBuilder, ScenarioBuilder>();
-            services.AddScoped<Scenario>();
-
-            // Events
-            services.AddAllScenarioEvents(typeof(OrderFulfillmentScenario).Assembly);
-
-            services.AddTransient<IPaymentService, PaymentService>();
-
-            // Scenario
-            services.AddScoped<OrderFulfillmentScenario>();
-            services.AddScoped<PaymentScenario>();
-
-            //Builders
-            services.AddScoped<OrderScenarioBuilder>();
-            services.AddTransient<OrderScenarioBuilder>();
-
-            services.AddTransient<ScenarioExecutionOptions>();
-            services.AddTransient<OrderScenarioBuilder>();
-            services.AddTransient<IScenarioOptionsBuilder<OrderScenarioBuilder>, OrderScenarioBuilder>();
-
-            _provider = services.BuildServiceProvider();
-        }
-
         [TestMethod]
         public async Task RunScenarioThroughToPaymentStep()
         {
             // Arrange
-            var scenario = _provider.GetRequiredService<Scenario>();
+            var scenario = new Scenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
             var context = await scenario.BuildAsync<OrderFulfillmentScenario, OrderScenarioBuilder>
@@ -69,10 +37,10 @@ namespace ScenarioEngine.Tests
         public async Task RunFullScenario()
         {
             // Arrange
-            var scenario = _provider.GetRequiredService<Scenario>();
+            var scenario = new Scenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await scenario.BuildAsync<OrderFulfillmentScenario>();
+            var context = await scenario.BuildAsync<OrderFulfillmentScenario, OrderScenarioBuilder>();
 
             // Assert: OrderId exists
             Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));
