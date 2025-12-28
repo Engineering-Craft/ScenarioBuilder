@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core
 {
     // Domain/ScenarioContext.cs
     public sealed class ScenarioContext

@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ScenarioBuilderV3.Core;
+﻿using ScenarioBuilder.Core;
 using ScenarioBuilderV3.Domain;
-using ScenarioBuilderV3.Domain.Extensions;
-using System;
-using System.Threading.Tasks;
 
 namespace ScenarioEngine.Tests
 {
@@ -18,9 +13,10 @@ namespace ScenarioEngine.Tests
             var scenario = new Scenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await scenario.BuildAsync<OrderFulfillmentScenario, OrderScenarioBuilder>
+            var context = await scenario.BuildAsync<OrderScenario, OrderScenarioBuilder>
                                                     (
                                                         b => b.ByFailingPayment()
+                                                              .BySettingTheShipping()
                                                     );
 
             // Assert: OrderId exists
@@ -40,7 +36,7 @@ namespace ScenarioEngine.Tests
             var scenario = new Scenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await scenario.BuildAsync<OrderFulfillmentScenario, OrderScenarioBuilder>();
+            var context = await scenario.BuildAsync<OrderScenario, OrderScenarioBuilder>();
 
             // Assert: OrderId exists
             Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));

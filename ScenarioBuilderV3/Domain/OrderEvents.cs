@@ -1,11 +1,12 @@
-﻿using ScenarioBuilderV3.Core;
+﻿using ScenarioBuilder.Core.Interfaces;
+using ScenarioBuilderV3.Core;
 
 namespace ScenarioBuilderV3.Domain
 {
     // Domain/Events.cs
     public sealed class CreateOrderEvent : IScenarioEvent
     {
-        private IPaymentService ps;
+        private readonly IPaymentService ps;
 
         public CreateOrderEvent(IPaymentService svc)
         {
@@ -43,9 +44,12 @@ namespace ScenarioBuilderV3.Domain
 
     internal class ChargePaymentEventFail : IScenarioEvent
     {
-        private IPaymentService ps;
+        private readonly IPaymentService ps;
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
         public ChargePaymentEventFail()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         {
         }
 
@@ -56,6 +60,7 @@ namespace ScenarioBuilderV3.Domain
 
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
+            ps.Pay();
             return Task.CompletedTask;
         }
     }

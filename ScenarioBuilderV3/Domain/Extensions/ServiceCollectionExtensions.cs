@@ -5,7 +5,7 @@ using System.Text;
 namespace ScenarioBuilderV3.Domain.Extensions
 {
     using Microsoft.Extensions.DependencyInjection;
-    using ScenarioBuilderV3.Core;
+    using ScenarioBuilder.Core.Interfaces;
     using System;
     using System.Linq;
     using System.Reflection;

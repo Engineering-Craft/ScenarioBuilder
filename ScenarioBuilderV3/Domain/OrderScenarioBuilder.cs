@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ScenarioBuilder.Core.Interfaces;
 using ScenarioBuilderV3.Core;
 using ScenarioBuilderV3.Domain.Extensions;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 namespace ScenarioBuilderV3.Domain
 {
     // Domain/OrderScenarioBoundaries.cs
-    public sealed class OrderScenarioBuilder : IScenarioOptionsBuilder<OrderScenarioBuilder>
+    public sealed class OrderScenarioBuilder : IScenarioOptionsBuilder
     {
         public ScenarioExecutionOptions ScenarioOptions { get; }
 
@@ -31,12 +32,12 @@ namespace ScenarioBuilderV3.Domain
                 services.AddScoped<Scenario>();
 
                 // Events
-                services.AddAllScenarioEvents(typeof(OrderFulfillmentScenario).Assembly);
+                services.AddAllScenarioEvents(typeof(OrderScenario).Assembly);
 
                 services.AddTransient<IPaymentService, PaymentService>();
 
                 // Scenario
-                services.AddScoped<OrderFulfillmentScenario>();
+                services.AddScoped<OrderScenario>();
                 services.AddScoped<PaymentScenario>();
 
                 //Builders
@@ -45,7 +46,6 @@ namespace ScenarioBuilderV3.Domain
 
                 services.AddTransient<ScenarioExecutionOptions>();
                 services.AddTransient<OrderScenarioBuilder>();
-                services.AddTransient<IScenarioOptionsBuilder<OrderScenarioBuilder>, OrderScenarioBuilder>();
 
                 return services.BuildServiceProvider();
             }
@@ -60,6 +60,7 @@ namespace ScenarioBuilderV3.Domain
         public OrderScenarioBuilder ByFailingPayment()
         {
             ScenarioOptions.Override<ChargePaymentEvent, ChargePaymentEventFail>(Services);
+            ScenarioOptions.RunUntil<ChargePaymentEvent>();
             return this;
         }
 

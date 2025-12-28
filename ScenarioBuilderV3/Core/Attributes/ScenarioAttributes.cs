@@ -1,9 +1,10 @@
-﻿using ScenarioBuilderV3.Domain;
+﻿using ScenarioBuilder.Core.Interfaces;
+using ScenarioBuilderV3.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core.Attributes
 {
     // Domain/ScenarioAttributes.cs
     [AttributeUsage(AttributeTargets.Class)]

@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ScenarioBuilderV3.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ScenarioBuilder.Core.Interfaces;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core
 {
     // Domain/ScenarioExecutionOptions.cs
     public sealed class ScenarioExecutionOptions
@@ -24,13 +21,6 @@ namespace ScenarioBuilderV3.Core
         public ScenarioExecutionOptions RunUntil<TStep>()
             where TStep : IScenarioEvent
             => StopBefore<TStep>();
-
-        public ScenarioExecutionOptions Override<TStep>(IScenarioEvent replacement)
-            where TStep : IScenarioEvent
-        {
-            _overrides[typeof(TStep)] = replacement;
-            return this;
-        }
 
         public ScenarioExecutionOptions Override<TStep, TReplacementStep>(IServiceProvider sp)
         where TStep : IScenarioEvent

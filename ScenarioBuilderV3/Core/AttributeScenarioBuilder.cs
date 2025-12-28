@@ -1,8 +1,9 @@
-﻿using ScenarioBuilderV3.Domain;
+﻿using ScenarioBuilder.Core.Attributes;
+using ScenarioBuilder.Core.Interfaces;
 using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core
 {
     public sealed class AttributeScenarioBuilder
     {

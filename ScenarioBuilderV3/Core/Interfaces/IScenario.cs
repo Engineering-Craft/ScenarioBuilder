@@ -1,4 +1,4 @@
-﻿namespace ScenarioBuilderV3.Core
+﻿namespace ScenarioBuilder.Core.Interfaces
 {
     public interface IScenario
     {

@@ -1,11 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ScenarioBuilderV3.Domain;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using ScenarioBuilder.Core.Interfaces;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core
 {
     public class Scenario : IScenarioBuilder
     {
@@ -16,6 +12,7 @@ namespace ScenarioBuilderV3.Core
         public Scenario()
         {
             _context = new ScenarioContext();
+            _scenarioProvider = new ServiceCollection().BuildServiceProvider();
         }
 
         /// <summary>
@@ -29,41 +26,24 @@ namespace ScenarioBuilderV3.Core
         }
 
         /// <summary>
-        /// Attribute-driven scenario execution.
-        /// </summary>
-        public async Task<ScenarioContext> BuildAsync<TScenario>(
-            ScenarioExecutionOptions? options = null,
-            CancellationToken ct = default)
-            where TScenario : IScenario
-        {
-            // Build steps from attributes into this instance
-            var attributeBuilder = new AttributeScenarioBuilder(this);
-            attributeBuilder.Build<TScenario>();
-
-            return await RunAsync(options, ct);
-        }
-
-        /// <summary>
         /// Builder-driven execution (fluent configuration).
         /// </summary>
         public async Task<ScenarioContext> BuildAsync<TScenario, TBuilder>(
             Func<TBuilder, TBuilder>? configure = null,
             CancellationToken ct = default)
             where TScenario : IScenario
-            where TBuilder : class, IScenarioOptionsBuilder<TBuilder>, new()
+            where TBuilder : class, IScenarioOptionsBuilder, new()
         {
             var builder = new TBuilder();
 
-            var configured = (configure ?? (b => b))(builder);
+            var configured = configure?.Invoke(builder) ?? builder;
 
             _scenarioProvider = configured.Services;
-
-            var options = configured.Options;
 
             var attributeBuilder = new AttributeScenarioBuilder(this);
             attributeBuilder.Build<TScenario>();
 
-            return await RunAsync(options, ct);
+            return await RunAsync(configured.Options, ct);
         }
 
         /// <summary>

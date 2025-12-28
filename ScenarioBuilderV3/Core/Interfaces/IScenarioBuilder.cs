@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ScenarioBuilder.Core;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core.Interfaces
 {
     /// <summary>
     /// Builds and executes a scenario consisting of multiple steps.

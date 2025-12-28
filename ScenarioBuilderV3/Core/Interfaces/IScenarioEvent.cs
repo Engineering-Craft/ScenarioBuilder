@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ScenarioBuilder.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core.Interfaces
 {
     // Domain/IScenarioEvent.cs
     public interface IScenarioEvent

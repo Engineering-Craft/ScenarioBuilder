@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ScenarioBuilder.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScenarioBuilderV3.Core
+namespace ScenarioBuilder.Core.Interfaces
 {
-    public interface IScenarioOptionsBuilder<T> where T : class
+    public interface IScenarioOptionsBuilder
     {
         ScenarioExecutionOptions Options { get; }
 

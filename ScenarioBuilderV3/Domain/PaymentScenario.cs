@@ -1,4 +1,6 @@
-﻿using ScenarioBuilderV3.Core;
+﻿using ScenarioBuilder.Core.Attributes;
+using ScenarioBuilder.Core.Interfaces;
+using ScenarioBuilderV3.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;

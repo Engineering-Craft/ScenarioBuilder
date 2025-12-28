@@ -1,9 +1,11 @@
-﻿using ScenarioBuilderV3.Core;
+﻿using ScenarioBuilder.Core.Attributes;
+using ScenarioBuilder.Core.Interfaces;
+using ScenarioBuilderV3.Core;
 
 namespace ScenarioBuilderV3.Domain
 {
     [Scenario]
-    public class OrderFulfillmentScenario : IScenario
+    public class OrderScenario : IScenario
     {
         [ScenarioStep(typeof(CreateOrderEvent))]
         public CreateOrderEvent? CreateOrder { get; init; }
