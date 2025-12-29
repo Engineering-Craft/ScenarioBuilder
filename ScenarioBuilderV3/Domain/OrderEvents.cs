@@ -1,5 +1,5 @@
 ﻿using ScenarioBuilder.Core.Interfaces;
-using ScenarioBuilderV3.Core;
+using ScenarioBuilder.Core;
 
 namespace ScenarioBuilderV3.Domain
 {

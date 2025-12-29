@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScenarioBuilder.Core.Interfaces;
-using ScenarioBuilderV3.Core;
+using ScenarioBuilder.Core;
 using ScenarioBuilderV3.Domain.Extensions;
 using System;
 using System.Collections.Generic;
