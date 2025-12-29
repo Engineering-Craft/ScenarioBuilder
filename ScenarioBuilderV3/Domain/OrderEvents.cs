@@ -78,6 +78,8 @@ namespace ScenarioBuilder.Domain
     {
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
+            Shipping obj = context.Get<Shipping>(nameof(Shipping));
+
             Console.WriteLine("Order shipped");
             return Task.CompletedTask;
         }

@@ -10,7 +10,5 @@ namespace ScenarioBuilder.Core.Interfaces
         ScenarioExecutionOptions Options { get; }
 
         IServiceProvider Services { get; }
-
-        IScenarioOptionsBuilder BuildAsync();
     }
 }

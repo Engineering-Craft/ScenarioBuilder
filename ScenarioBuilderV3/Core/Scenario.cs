@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using ScenarioBuilder.Core.Interfaces;
+using System.Reflection;
 
 namespace ScenarioBuilder.Core
 {
@@ -9,11 +11,19 @@ namespace ScenarioBuilder.Core
         private readonly List<ScenarioStep> _steps = new();
         private readonly HashSet<Type> _executedSteps = new();   // <-- NEW
         private ScenarioExecutionOptions _lastOptions = ScenarioExecutionOptions.Default;
+        private readonly Mapper mapper;
 
         private IServiceProvider _scenarioProvider;
 
         protected Scenario()
         {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ScenarioToContextProfile>();
+            });
+
+            mapper = new Mapper(config);
+
             _context = new ScenarioContext();
             _scenarioProvider = new ServiceCollection().BuildServiceProvider();
         }
@@ -51,6 +61,8 @@ namespace ScenarioBuilder.Core
             var attributeBuilder = new AttributeScenarioBuilder(this);
             attributeBuilder.Build(this);
 
+            MapBuilderToContext(configured);
+
             await RunAsync(configured.Options, ct);
 
             return this;
@@ -63,6 +75,8 @@ namespace ScenarioBuilder.Core
         ScenarioExecutionOptions? options = null,
         CancellationToken ct = default)
         {
+            mapper.Map(this, _context);
+
             if (options != null)
             {
                 _lastOptions = _lastOptions.MergeWith(options);
@@ -94,6 +108,23 @@ namespace ScenarioBuilder.Core
         public ScenarioContext GetContext()
         {
             return _context;
+        }
+
+        private void MapBuilderToContext(object builder)
+        {
+            var properties = builder.GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(p => p.CanRead && p.GetIndexParameters().Length == 0);
+
+            foreach (var prop in properties)
+            {
+                var value = prop.GetValue(builder);
+
+                if (value != null)
+                {
+                    _context.Set(prop.Name, value);
+                }
+            }
         }
 
         private sealed record ScenarioStep(Type StepId, Func<IScenarioEvent> Factory);

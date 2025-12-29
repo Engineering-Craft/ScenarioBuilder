@@ -18,6 +18,7 @@ namespace ScenarioBuilder.Domain
         public OrderScenarioBuilder()
         {
             ScenarioOptions = new ScenarioExecutionOptions();
+            Shipping = new Shipping();
         }
 
         public IServiceProvider Services
@@ -62,15 +63,12 @@ namespace ScenarioBuilder.Domain
             return this;
         }
 
-        public OrderScenarioBuilder BySettingTheShipping()
+        public OrderScenarioBuilder BySettingTheShipping(Shipping dto)
         {
-            ScenarioOptions.RunUntil<ShipOrderEvent>();
+            this.Shipping = dto;
             return this;
         }
 
-        public IScenarioOptionsBuilder BuildAsync()
-        {
-            return this;
-        }
+        public Shipping Shipping { get; private set; }
     }
 }

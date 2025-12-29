@@ -16,7 +16,7 @@ namespace ScenarioEngine.Tests
             var builtScenario = await scenario.BuildAsync<OrderScenarioBuilder>
                                                     (
                                                         b => b.ByFailingPayment()
-                                                              .BySettingTheShipping()
+                                                              .BySettingTheShipping(new Shipping() { Name = "Test", Method = "Air" })
                                                     );
 
             // Assert: OrderId exists
