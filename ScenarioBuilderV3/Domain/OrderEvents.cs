@@ -1,7 +1,7 @@
 ﻿using ScenarioBuilder.Core.Interfaces;
 using ScenarioBuilder.Core;
 
-namespace ScenarioBuilderV3.Domain
+namespace ScenarioBuilder.Domain
 {
     // Domain/Events.cs
     public sealed class CreateOrderEvent : IScenarioEvent

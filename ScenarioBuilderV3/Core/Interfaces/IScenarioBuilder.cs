@@ -18,12 +18,5 @@ namespace ScenarioBuilder.Core.Interfaces
         /// <typeparam name="TEvent">The event type to execute.</typeparam>
         IScenarioBuilder AddStep<TEvent>()
             where TEvent : IScenarioEvent;
-
-        /// <summary>
-        /// Runs all steps in the scenario sequentially.
-        /// </summary>
-        /// <param name="options">Optional execution options (e.g., StopBefore).</param>
-        /// <param name="ct">Optional cancellation token.</param>
-  //      Task<ScenarioContext> RunAsync(ScenarioExecutionOptions? options = null, CancellationToken ct = default);
     }
 }

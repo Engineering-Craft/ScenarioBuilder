@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScenarioBuilder.Core.Interfaces;
 using ScenarioBuilder.Core;
-using ScenarioBuilderV3.Domain.Extensions;
+using ScenarioBuilder.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScenarioBuilderV3.Domain
+namespace ScenarioBuilder.Domain
 {
     // Domain/OrderScenarioBoundaries.cs
     public sealed class OrderScenarioBuilder : IScenarioOptionsBuilder
@@ -28,8 +28,6 @@ namespace ScenarioBuilderV3.Domain
 
                 // Core services
                 services.AddScoped<ScenarioContext>();
-
-                //     services.AddScoped<Scenario>();
 
                 // Events
                 services.AddAllScenarioEvents(typeof(OrderScenario).Assembly);

@@ -1,5 +1,5 @@
 ﻿using ScenarioBuilder.Core;
-using ScenarioBuilderV3.Domain;
+using ScenarioBuilder.Domain;
 
 namespace ScenarioEngine.Tests
 {
@@ -13,21 +13,17 @@ namespace ScenarioEngine.Tests
             var scenario = new OrderScenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            await scenario.BuildAsync<OrderScenarioBuilder>
+            var builtScenario = await scenario.BuildAsync<OrderScenarioBuilder>
                                                     (
                                                         b => b.ByFailingPayment()
                                                               .BySettingTheShipping()
                                                     );
 
             // Assert: OrderId exists
-            Assert.IsTrue(scenario.GetContext().TryGet<Guid>("OrderId", out var orderId));
+            Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("OrderId", out var orderId));
             Assert.AreNotEqual(Guid.Empty, orderId);
 
-            Assert.IsFalse(scenario.GetContext().TryGet<Guid>("PaymentId", out var paymentId));
-
-            await scenario.BuildAsync<OrderScenarioBuilder>
-                                                   (b => b.BySettingTheShipping()
-                                                   );
+            Assert.IsFalse(builtScenario.GetContext().TryGet<Guid>("PaymentId", out var paymentId));
         }
 
         [TestMethod]
@@ -37,13 +33,13 @@ namespace ScenarioEngine.Tests
             var scenario = new OrderScenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await scenario.BuildAsync<OrderScenarioBuilder>();
+            var builtScenario = await scenario.BuildAsync<OrderScenarioBuilder>();
 
             // Assert: OrderId exists
-            Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));
+            Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("OrderId", out var orderId));
             Assert.AreNotEqual(Guid.Empty, orderId);
 
-            Assert.IsTrue(context.TryGet<Guid>("PaymentId", out var paymentId));
+            Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("PaymentId", out var paymentId));
         }
     }
 }

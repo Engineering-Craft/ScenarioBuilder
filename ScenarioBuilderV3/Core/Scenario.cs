@@ -37,7 +37,7 @@ namespace ScenarioBuilder.Core
         /// <summary>
         /// Builder-driven execution (fluent configuration).
         /// </summary>
-        public async Task<ScenarioContext> BuildAsync<TBuilder>(
+        public async Task<Scenario> BuildAsync<TBuilder>(
             Func<TBuilder, TBuilder>? configure = null,
             CancellationToken ct = default)
             where TBuilder : class, IScenarioOptionsBuilder, new()
@@ -51,20 +51,10 @@ namespace ScenarioBuilder.Core
             var attributeBuilder = new AttributeScenarioBuilder(this);
             attributeBuilder.Build(this);
 
-            return await RunAsync(configured.Options, ct);
+            await RunAsync(configured.Options, ct);
+
+            return this;
         }
-
-        public IScenarioOptionsBuilder BuildAsync(
-           Func<IScenarioOptionsBuilder, IScenarioOptionsBuilder> configure = null)
-        {
-            var builder = CreateBuilder();
-            if (configure != null)
-                builder = configure(builder);
-
-            return builder.BuildAsync();
-        }
-
-        protected abstract IScenarioOptionsBuilder CreateBuilder();
 
         /// <summary>
         /// Execute the scenario with optional execution options.

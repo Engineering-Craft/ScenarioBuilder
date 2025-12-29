@@ -1,4 +1,4 @@
-﻿namespace ScenarioBuilderV3.Domain
+﻿namespace ScenarioBuilder.Domain
 {
     public interface IPaymentService
     {

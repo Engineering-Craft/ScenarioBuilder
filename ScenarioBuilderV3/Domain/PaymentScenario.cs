@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScenarioBuilderV3.Domain
+namespace ScenarioBuilder.Domain
 {
     [Scenario]
     public sealed class PaymentScenario : IScenario

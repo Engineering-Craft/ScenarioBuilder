@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScenarioBuilderV3.Domain.Extensions
+namespace ScenarioBuilder.Domain.Extensions
 {
     using Microsoft.Extensions.DependencyInjection;
     using ScenarioBuilder.Core.Interfaces;
