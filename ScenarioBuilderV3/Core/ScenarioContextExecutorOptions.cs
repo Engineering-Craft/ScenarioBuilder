@@ -34,5 +34,28 @@ namespace ScenarioBuilder.Core
 
         internal bool TryGetOverride(Type stepId, out IScenarioEvent replacement)
             => _overrides.TryGetValue(stepId, out replacement!);
+
+        public ScenarioExecutionOptions MergeWith(ScenarioExecutionOptions other)
+        {
+            var merged = new ScenarioExecutionOptions();
+
+            // copy existing stop-before
+            foreach (var s in _stopBefore)
+                merged._stopBefore.Add(s);
+
+            // copy existing overrides
+            foreach (var kv in _overrides)
+                merged._overrides[kv.Key] = kv.Value;
+
+            // append new stop-before values
+            foreach (var s in other._stopBefore)
+                merged._stopBefore.Add(s);
+
+            // append new overrides (new wins)
+            foreach (var kv in other._overrides)
+                merged._overrides[kv.Key] = kv.Value;
+
+            return merged;
+        }
     }
 }

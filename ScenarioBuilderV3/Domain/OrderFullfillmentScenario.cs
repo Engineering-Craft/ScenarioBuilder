@@ -1,10 +1,11 @@
-﻿using ScenarioBuilder.Core.Attributes;
+﻿using ScenarioBuilder.Core;
+using ScenarioBuilder.Core.Attributes;
 using ScenarioBuilder.Core.Interfaces;
 
 namespace ScenarioBuilderV3.Domain
 {
     [Scenario]
-    public class OrderScenario : IScenario
+    public class OrderScenario : Scenario, IScenario
     {
         [ScenarioStep(typeof(CreateOrderEvent))]
         public CreateOrderEvent? CreateOrder { get; init; }
@@ -17,5 +18,10 @@ namespace ScenarioBuilderV3.Domain
 
         [ScenarioStep(typeof(ShipOrderEvent))]
         public ShipOrderEvent? ShipOrder { get; init; }
+
+        protected override IScenarioOptionsBuilder CreateBuilder()
+        {
+            return null;
+        }
     }
 }

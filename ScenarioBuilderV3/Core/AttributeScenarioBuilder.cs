@@ -29,6 +29,20 @@ namespace ScenarioBuilder.Core
             }
         }
 
+        public void Build(Scenario scenario)
+        {
+            var metadata = _cache.GetOrAdd(scenario.GetType(), t => BuildMetadata(t));
+
+            foreach (var step in metadata.Steps)
+            {
+                var method = typeof(IScenarioBuilder)
+                    .GetMethod(nameof(IScenarioBuilder.AddStep))!
+                    .MakeGenericMethod(step.EventType);
+
+                method.Invoke(_builder, null);
+            }
+        }
+
         private static ScenarioMetadata BuildMetadata(Type scenarioType)
         {
             var steps = new List<ScenarioStepMetadata>();

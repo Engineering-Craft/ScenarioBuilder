@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ScenarioBuilder.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +10,7 @@ namespace ScenarioBuilder.Core.Interfaces
         ScenarioExecutionOptions Options { get; }
 
         IServiceProvider Services { get; }
+
+        IScenarioOptionsBuilder BuildAsync();
     }
 }

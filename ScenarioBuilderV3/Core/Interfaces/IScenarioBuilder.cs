@@ -24,6 +24,6 @@ namespace ScenarioBuilder.Core.Interfaces
         /// </summary>
         /// <param name="options">Optional execution options (e.g., StopBefore).</param>
         /// <param name="ct">Optional cancellation token.</param>
-        Task<ScenarioContext> RunAsync(ScenarioExecutionOptions? options = null, CancellationToken ct = default);
+  //      Task<ScenarioContext> RunAsync(ScenarioExecutionOptions? options = null, CancellationToken ct = default);
     }
 }

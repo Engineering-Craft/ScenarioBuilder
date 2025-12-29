@@ -29,7 +29,7 @@ namespace ScenarioBuilderV3.Domain
                 // Core services
                 services.AddScoped<ScenarioContext>();
 
-                services.AddScoped<Scenario>();
+                //     services.AddScoped<Scenario>();
 
                 // Events
                 services.AddAllScenarioEvents(typeof(OrderScenario).Assembly);
@@ -67,6 +67,11 @@ namespace ScenarioBuilderV3.Domain
         public OrderScenarioBuilder BySettingTheShipping()
         {
             ScenarioOptions.RunUntil<ShipOrderEvent>();
+            return this;
+        }
+
+        public IScenarioOptionsBuilder BuildAsync()
+        {
             return this;
         }
     }

@@ -10,33 +10,34 @@ namespace ScenarioEngine.Tests
         public async Task RunScenarioThroughToPaymentStep()
         {
             // Arrange
-            var scenario = new Scenario();
+            var scenario = new OrderScenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await scenario.BuildAsync<OrderScenario, OrderScenarioBuilder>
+            await scenario.BuildAsync<OrderScenarioBuilder>
                                                     (
                                                         b => b.ByFailingPayment()
                                                               .BySettingTheShipping()
                                                     );
 
             // Assert: OrderId exists
-            Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));
+            Assert.IsTrue(scenario.GetContext().TryGet<Guid>("OrderId", out var orderId));
             Assert.AreNotEqual(Guid.Empty, orderId);
 
-            Assert.IsFalse(context.TryGet<Guid>("PaymentId", out var paymentId));
+            Assert.IsFalse(scenario.GetContext().TryGet<Guid>("PaymentId", out var paymentId));
 
-            // Optional: could check side effects if events updated context
-            Console.WriteLine($"Order ran through payment: {orderId}");
+            await scenario.BuildAsync<OrderScenarioBuilder>
+                                                   (b => b.BySettingTheShipping()
+                                                   );
         }
 
         [TestMethod]
         public async Task RunFullScenario()
         {
             // Arrange
-            var scenario = new Scenario();
+            var scenario = new OrderScenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var context = await scenario.BuildAsync<OrderScenario, OrderScenarioBuilder>();
+            var context = await scenario.BuildAsync<OrderScenarioBuilder>();
 
             // Assert: OrderId exists
             Assert.IsTrue(context.TryGet<Guid>("OrderId", out var orderId));
