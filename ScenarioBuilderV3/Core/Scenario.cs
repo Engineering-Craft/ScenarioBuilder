@@ -11,19 +11,11 @@ namespace ScenarioBuilder.Core
         private readonly List<ScenarioStep> _steps = new();
         private readonly HashSet<Type> _executedSteps = new();   // <-- NEW
         private ScenarioExecutionOptions _lastOptions = ScenarioExecutionOptions.Default;
-        private readonly Mapper mapper;
 
         private IServiceProvider _scenarioProvider;
 
         protected Scenario()
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<ScenarioToContextProfile>();
-            });
-
-            mapper = new Mapper(config);
-
             _context = new ScenarioContext();
             _scenarioProvider = new ServiceCollection().BuildServiceProvider();
         }
@@ -47,7 +39,7 @@ namespace ScenarioBuilder.Core
         /// <summary>
         /// Builder-driven execution (fluent configuration).
         /// </summary>
-        public async Task<Scenario> BuildAsync<TBuilder>(
+        public async Task<Scenario> ExecuteAsync<TBuilder>(
             Func<TBuilder, TBuilder>? configure = null,
             CancellationToken ct = default)
             where TBuilder : class, IScenarioOptionsBuilder, new()
@@ -75,8 +67,6 @@ namespace ScenarioBuilder.Core
         ScenarioExecutionOptions? options = null,
         CancellationToken ct = default)
         {
-            mapper.Map(this, _context);
-
             if (options != null)
             {
                 _lastOptions = _lastOptions.MergeWith(options);

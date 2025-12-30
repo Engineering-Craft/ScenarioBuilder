@@ -11,7 +11,7 @@ namespace ScenarioBuilder.Domain
     // Domain/OrderScenarioBoundaries.cs
     public sealed class OrderScenarioBuilder : IScenarioOptionsBuilder
     {
-        public ScenarioExecutionOptions ScenarioOptions { get; }
+        private ScenarioExecutionOptions ScenarioOptions { get; }
 
         public ScenarioExecutionOptions Options => ScenarioOptions;
 
@@ -19,11 +19,8 @@ namespace ScenarioBuilder.Domain
         {
             ScenarioOptions = new ScenarioExecutionOptions();
             Shipping = new Shipping();
-        }
 
-        public IServiceProvider Services
-        {
-            get
+            _services = new Lazy<IServiceProvider>(() =>
             {
                 var services = new ServiceCollection();
 
@@ -47,8 +44,12 @@ namespace ScenarioBuilder.Domain
                 services.AddTransient<OrderScenarioBuilder>();
 
                 return services.BuildServiceProvider();
-            }
+            });
         }
+
+        private readonly Lazy<IServiceProvider> _services;
+
+        private IServiceProvider Services => _services.Value;
 
         public OrderScenarioBuilder ByReservingInventory()
         {
@@ -70,5 +71,7 @@ namespace ScenarioBuilder.Domain
         }
 
         public Shipping Shipping { get; private set; }
+
+        IServiceProvider IScenarioOptionsBuilder.Services => Services;
     }
 }

@@ -13,7 +13,7 @@ namespace ScenarioEngine.Tests
             var scenario = new OrderScenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var builtScenario = await scenario.BuildAsync<OrderScenarioBuilder>
+            var builtScenario = await scenario.ExecuteAsync<OrderScenarioBuilder>
                                                     (
                                                         b => b.ByFailingPayment()
                                                               .BySettingTheShipping(new Shipping() { Name = "Test", Method = "Air" })
@@ -33,7 +33,7 @@ namespace ScenarioEngine.Tests
             var scenario = new OrderScenario();
 
             // Act: Run scenario up to (but not including) ShipOrderStep
-            var builtScenario = await scenario.BuildAsync<OrderScenarioBuilder>();
+            var builtScenario = await scenario.ExecuteAsync<OrderScenarioBuilder>();
 
             // Assert: OrderId exists
             Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("OrderId", out var orderId));
