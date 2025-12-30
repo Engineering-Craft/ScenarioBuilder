@@ -2,5 +2,5 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
   </Folder>
-  <Project Path="ScenarioBuilderV3/ScenarioBuilder.csproj" Id="dd108432-b9bf-4e21-88db-5e45e2749ef4" />
+  <Project Path="src/ScenarioBuilder.csproj" />
 </Solution>
