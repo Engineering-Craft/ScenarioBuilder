@@ -60,7 +60,7 @@ namespace ScenarioBuilder.Domain
         public OrderScenarioBuilder ByFailingPayment()
         {
             ScenarioOptions.Override<ChargePaymentEvent, ChargePaymentEventFail>(Services);
-            ScenarioOptions.RunUntil<ChargePaymentEvent>();
+            ScenarioOptions.RunUntil<ShipOrderEvent>();
             return this;
         }
 

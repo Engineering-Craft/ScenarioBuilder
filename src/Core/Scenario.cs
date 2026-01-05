@@ -9,7 +9,7 @@ namespace ScenarioBuilder.Core
     {
         private readonly ScenarioContext _context;
         private readonly List<ScenarioStep> _steps = new();
-        private readonly HashSet<Type> _executedSteps = new();   // <-- NEW
+        private readonly HashSet<Type> _executedSteps = new();
         private ScenarioExecutionOptions _lastOptions = ScenarioExecutionOptions.Default;
 
         private IServiceProvider _scenarioProvider;
@@ -74,7 +74,7 @@ namespace ScenarioBuilder.Core
 
             foreach (var step in _steps)
             {
-                if (_lastOptions.ShouldStopBefore(step.StepId))
+                if (_lastOptions.ShouldStopAt(step.StepId))
                     break;
 
                 if (_executedSteps.Contains(step.StepId))
@@ -83,6 +83,8 @@ namespace ScenarioBuilder.Core
                 if (_lastOptions.TryGetOverride(step.StepId, out var overrideEvent))
                 {
                     await overrideEvent.ExecuteAsync(_context, ct);
+
+                    _executedSteps.Add(overrideEvent.GetType());
                 }
                 else
                 {

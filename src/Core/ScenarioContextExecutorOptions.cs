@@ -30,7 +30,7 @@ namespace ScenarioBuilder.Core
             return this;
         }
 
-        internal bool ShouldStopBefore(Type stepId) => _stopBefore.Contains(stepId);
+        internal bool ShouldStopAt(Type stepId) => _stopBefore.Contains(stepId);
 
         internal bool TryGetOverride(Type stepId, out IScenarioEvent replacement)
             => _overrides.TryGetValue(stepId, out replacement!);
