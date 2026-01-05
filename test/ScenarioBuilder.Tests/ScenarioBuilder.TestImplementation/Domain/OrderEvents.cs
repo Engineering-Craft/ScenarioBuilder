@@ -44,12 +44,9 @@ namespace ScenarioBuilder.Domain
 
     internal class ChargePaymentEventFail : IScenarioEvent
     {
-        private readonly IPaymentService ps;
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        private readonly IPaymentService? ps;
 
         public ChargePaymentEventFail()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         {
         }
 
@@ -60,7 +57,7 @@ namespace ScenarioBuilder.Domain
 
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
-            ps.Pay();
+            ps?.Pay();
             return Task.CompletedTask;
         }
     }
@@ -80,7 +77,17 @@ namespace ScenarioBuilder.Domain
         {
             Shipping obj = context.Get<Shipping>(nameof(Shipping));
 
+            Console.WriteLine($"Shipping with {obj.Name} by {obj.Method}");
             Console.WriteLine("Order shipped");
+            return Task.CompletedTask;
+        }
+    }
+
+    public sealed class SubScenarioEvent : IScenarioEvent
+    {
+        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        {
+            Console.WriteLine("SubScenario executed");
             return Task.CompletedTask;
         }
     }

@@ -1,7 +1,6 @@
-﻿using ScenarioBuilder.Core;
-using ScenarioBuilder.Domain;
+﻿using ScenarioBuilder.Domain;
 
-namespace ScenarioEngine.Tests
+namespace ScenarioBuilder.Tests.Integration
 {
     [TestClass]
     public class OrderFulfillmentScenarioTests

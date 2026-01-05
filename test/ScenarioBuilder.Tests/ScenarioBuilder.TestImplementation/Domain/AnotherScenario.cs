@@ -6,5 +6,7 @@ namespace ScenarioBuilder.Domain
     [Scenario]
     public sealed class AnotherScenario : IScenario
     {
+        [ScenarioStep(typeof(SubScenarioEvent))]
+        public SubScenarioEvent? DoSomeSubActivity { get; init; }
     }
 }
