@@ -5,6 +5,9 @@ using ScenarioBuilder.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Bogus;
+using ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model;
+using ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model.Fakers;
 
 namespace ScenarioBuilder.Domain
 {
@@ -18,7 +21,9 @@ namespace ScenarioBuilder.Domain
         public OrderScenarioBuilder()
         {
             ScenarioOptions = new ScenarioExecutionOptions();
-            Shipping = new Shipping();
+
+            Order = new OrderFaker().Generate();
+            Shipping = new ShippingFaker().Generate();
 
             _services = new Lazy<IServiceProvider>(() =>
             {
@@ -59,8 +64,8 @@ namespace ScenarioBuilder.Domain
 
         public OrderScenarioBuilder ByFailingPayment()
         {
+            ScenarioOptions.RunUntil<ChargePaymentEvent>();
             ScenarioOptions.Override<ChargePaymentEvent, ChargePaymentEventFail>(Services);
-            ScenarioOptions.RunUntil<ShipOrderEvent>();
             return this;
         }
 
@@ -70,7 +75,14 @@ namespace ScenarioBuilder.Domain
             return this;
         }
 
+        public OrderScenarioBuilder BySettingTheOrder(Order dto)
+        {
+            this.Order = dto;
+            return this;
+        }
+
         public Shipping Shipping { get; private set; }
+        public Order Order { get; private set; }
 
         IServiceProvider IScenarioOptionsBuilder.Services => Services;
     }

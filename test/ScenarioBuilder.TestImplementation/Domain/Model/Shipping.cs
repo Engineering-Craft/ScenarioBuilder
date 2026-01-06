@@ -1,4 +1,4 @@
-﻿namespace ScenarioBuilder.Domain
+﻿namespace ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model
 {
     public class Shipping
     {

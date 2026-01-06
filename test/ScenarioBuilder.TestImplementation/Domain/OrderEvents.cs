@@ -1,24 +1,22 @@
 ﻿using ScenarioBuilder.Core.Interfaces;
 using ScenarioBuilder.Core;
+using ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model;
 
 namespace ScenarioBuilder.Domain
 {
     // Domain/Events.cs
     public sealed class CreateOrderEvent : IScenarioEvent
     {
-        private readonly IPaymentService ps;
-
-        public CreateOrderEvent(IPaymentService svc)
+        public CreateOrderEvent()
         {
-            this.ps = svc;
         }
 
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
-            ps.Pay();
-            var orderId = Guid.NewGuid();
-            context.Set("OrderId", orderId);
-            Console.WriteLine($"Order created: {orderId}");
+            var order = context.Get<Order>(nameof(Order));
+
+            context.Set("OrderId", order.Id);
+            Console.WriteLine($"Order created: {order.Id}");
             return Task.CompletedTask;
         }
     }
@@ -34,8 +32,16 @@ namespace ScenarioBuilder.Domain
 
     public sealed class ChargePaymentEvent : IScenarioEvent
     {
+        private readonly IPaymentService ps;
+
+        public ChargePaymentEvent(IPaymentService svc)
+        {
+            this.ps = svc;
+        }
+
         public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
         {
+            ps.Pay();
             Console.WriteLine("Payment charged");
             context.Set<Guid>("PaymentId", Guid.NewGuid());
             return Task.CompletedTask;

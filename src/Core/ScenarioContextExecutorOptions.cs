@@ -8,6 +8,7 @@ namespace ScenarioBuilder.Core
     {
         private readonly HashSet<Type> _stopBefore = new();
         private readonly Dictionary<Type, IScenarioEvent> _overrides = new();
+        private readonly Dictionary<Type, Type> _overrideMap = new();
 
         public static ScenarioExecutionOptions Default => new();
 
@@ -26,7 +27,14 @@ namespace ScenarioBuilder.Core
         where TStep : IScenarioEvent
         where TReplacementStep : IScenarioEvent, new()
         {
-            _overrides[typeof(TStep)] = sp.GetRequiredService<TReplacementStep>();
+            var replacement = sp.GetRequiredService<TReplacementStep>();
+
+            // map original -> replacement type
+            _overrideMap[typeof(TStep)] = typeof(TReplacementStep);
+
+            // map original -> replacement instance
+            _overrides[typeof(TStep)] = replacement;
+
             return this;
         }
 
