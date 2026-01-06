@@ -18,14 +18,12 @@ namespace ScenarioBuilder.Tests.Integration
             var builtScenario = await scenario.ExecuteAsync<OrderScenarioBuilder>
                                                     (
                                                         b => b.ByFailingPayment()
-                                                              .BySettingTheShipping(new Shipping() { Name = "Test", Method = "Air" })
                                                     );
-
             // Assert: OrderId exists
             Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("OrderId", out var orderId));
             Assert.AreNotEqual(Guid.Empty, orderId);
 
-            Assert.IsFalse(builtScenario.GetContext().TryGet<Guid>("PaymentId", out var paymentId));
+            Assert.IsFalse(builtScenario.GetContext().TryGet<Guid>("PaymentId", out _));
         }
 
         [TestMethod]
@@ -41,7 +39,7 @@ namespace ScenarioBuilder.Tests.Integration
             Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("OrderId", out var orderId));
             Assert.AreNotEqual(Guid.Empty, orderId);
 
-            Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("PaymentId", out var paymentId));
+            Assert.IsTrue(builtScenario.GetContext().TryGet<Guid>("PaymentId", out _));
         }
 
         [TestMethod]
