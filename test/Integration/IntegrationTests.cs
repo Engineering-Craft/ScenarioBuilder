@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using ScenarioBuilder.Domain;
-using ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model;
 using ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model.Fakers;
 
 namespace ScenarioBuilder.Tests.Integration
@@ -55,8 +54,8 @@ namespace ScenarioBuilder.Tests.Integration
             var builtScenario = await scenario.ExecuteAsync<OrderScenarioBuilder>
                                                    (
                                                        b => b.BySettingTheOrder(orderFaked)
+                                                             .BySettingTheOrderType("Advanced")
                                                              .BySettingTheShipping(shippingFaked)
-
                                                    );
 
             // Assert: OrderId exists

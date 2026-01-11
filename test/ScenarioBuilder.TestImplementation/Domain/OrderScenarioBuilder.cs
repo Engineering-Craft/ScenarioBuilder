@@ -81,6 +81,12 @@ namespace ScenarioBuilder.Domain
             return this;
         }
 
+        public OrderScenarioBuilder BySettingTheOrderType(string type)
+        {
+            this.Order.Type = type;
+            return this;
+        }
+
         public Shipping Shipping { get; private set; }
         public Order Order { get; private set; }
 

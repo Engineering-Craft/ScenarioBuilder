@@ -10,5 +10,6 @@ namespace ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model
         public object CompanyName { get; internal set; }
         public object ContactName { get; internal set; }
         public object Phone { get; internal set; }
+        public string Type { get; internal set; }
     }
 }

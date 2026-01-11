@@ -13,7 +13,8 @@ namespace ScenarioBuilder.Tests.ScenarioBuilder.TestImplementation.Domain.Model.
             .RuleFor(c => c.Id, f => Guid.NewGuid())
             .RuleFor(c => c.CompanyName, f => f.Company.CompanyName())
             .RuleFor(c => c.ContactName, f => f.Name.FullName())
-            .RuleFor(c => c.Phone, f => f.Phone.PhoneNumberFormat());
+            .RuleFor(c => c.Phone, f => f.Phone.PhoneNumberFormat())
+            .RuleFor(c => c.Type, f => "Standard");
         }
     }
 }
