@@ -8,6 +8,6 @@ namespace ScenarioBuilder.Core.Interfaces
     // Domain/IScenarioEvent.cs
     public interface IScenarioEvent
     {
-        Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default);
+        Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default);
     }
 }

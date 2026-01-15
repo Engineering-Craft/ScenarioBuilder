@@ -5,7 +5,7 @@ using System.Text;
 namespace ScenarioBuilder.Core
 {
     // Domain/ScenarioContext.cs
-    public sealed class ScenarioContext
+    public sealed class ScenarioBuilderContext
     {
         private readonly Dictionary<string, object> _data = new();
 

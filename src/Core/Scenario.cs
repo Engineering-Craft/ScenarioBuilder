@@ -7,7 +7,7 @@ namespace ScenarioBuilder.Core
 {
     public abstract class Scenario : IScenarioBuilder
     {
-        private readonly ScenarioContext _context;
+        private readonly ScenarioBuilderContext _context;
         private readonly List<ScenarioStep> _steps = new();
         private readonly HashSet<Type> _executedSteps = new();
         private ScenarioExecutionOptions _lastOptions = ScenarioExecutionOptions.Default;
@@ -16,7 +16,7 @@ namespace ScenarioBuilder.Core
 
         protected Scenario()
         {
-            _context = new ScenarioContext();
+            _context = new ScenarioBuilderContext();
             _scenarioProvider = new ServiceCollection().BuildServiceProvider();
         }
 
@@ -63,7 +63,7 @@ namespace ScenarioBuilder.Core
         /// <summary>
         /// Execute the scenario with optional execution options.
         /// </summary>
-        public async Task<ScenarioContext> RunAsync(
+        public async Task<ScenarioBuilderContext> RunAsync(
         ScenarioExecutionOptions? options = null,
         CancellationToken ct = default)
         {
@@ -97,7 +97,7 @@ namespace ScenarioBuilder.Core
             return _context;
         }
 
-        public ScenarioContext GetContext()
+        public ScenarioBuilderContext GetContext()
         {
             return _context;
         }

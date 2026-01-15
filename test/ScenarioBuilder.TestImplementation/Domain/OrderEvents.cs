@@ -11,7 +11,7 @@ namespace ScenarioBuilder.Domain
         {
         }
 
-        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        public Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default)
         {
             var order = context.Get<Order>(nameof(Order));
 
@@ -23,7 +23,7 @@ namespace ScenarioBuilder.Domain
 
     public sealed class ReserveInventoryEvent : IScenarioEvent
     {
-        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        public Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default)
         {
             Console.WriteLine("Inventory reserved");
             return Task.CompletedTask;
@@ -39,7 +39,7 @@ namespace ScenarioBuilder.Domain
             this.ps = svc;
         }
 
-        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        public Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default)
         {
             ps.Pay();
             Console.WriteLine("Payment charged");
@@ -61,7 +61,7 @@ namespace ScenarioBuilder.Domain
             this.ps = svc;
         }
 
-        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        public Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default)
         {
             ps?.Pay();
             return Task.CompletedTask;
@@ -70,7 +70,7 @@ namespace ScenarioBuilder.Domain
 
     public sealed class VerifyPaymentEvent : IScenarioEvent
     {
-        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        public Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default)
         {
             Console.WriteLine("Payment Verified");
             return Task.CompletedTask;
@@ -79,7 +79,7 @@ namespace ScenarioBuilder.Domain
 
     public sealed class ShipOrderEvent : IScenarioEvent
     {
-        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        public Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default)
         {
             Shipping obj = context.Get<Shipping>(nameof(Shipping));
 
@@ -91,7 +91,7 @@ namespace ScenarioBuilder.Domain
 
     public sealed class SubScenarioEvent : IScenarioEvent
     {
-        public Task ExecuteAsync(ScenarioContext context, CancellationToken ct = default)
+        public Task ExecuteAsync(ScenarioBuilderContext context, CancellationToken ct = default)
         {
             Console.WriteLine("SubScenario executed");
             return Task.CompletedTask;

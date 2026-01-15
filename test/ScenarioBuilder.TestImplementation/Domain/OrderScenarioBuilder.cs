@@ -30,7 +30,7 @@ namespace ScenarioBuilder.Domain
                 var services = new ServiceCollection();
 
                 // Core services
-                services.AddScoped<ScenarioContext>();
+                services.AddScoped<ScenarioBuilderContext>();
 
                 // Events
                 services.AddAllScenarioEvents(typeof(OrderScenario).Assembly);
